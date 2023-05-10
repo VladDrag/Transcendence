@@ -1,17 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/models/mock_data/local_models';
+// import { User } from 'src/models/mock_data/local_models';
+import { PublicUser } from '../../interfaces/user/public_user.interface';
+import { FriendUser } from '../../interfaces/user/friend_user.interface';
+import { User, StatusValue } from 'src/models/orm_models/user.entity';
+import { Friend } from 'src/models/orm_models/friend.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SharedUser {
 
-    isFriend(myID:number, friendID:number):boolean //todo: Implement this.
+    constructor(
+        @InjectRepository(Friend)
+        private readonly friendRepository: Repository<Friend>
+    ){}
+
+
+    async isFriend(myID:number, friendID:number): Promise<boolean> //todo: Test this
     {
-        return (true);
+        const friend = await this.friendRepository.findOne({ where: { user: { userID: myID }, friendUser: { userID: friendID } } });
+        return !!friend;
     }
 
     findUser(userID:number)
     {
         return (true)
+    }
+
+    async getFriends(myID: number): Promise<Friend[]>  //todo: returning the friend objects instead of the lines of the public.friend database
+    {
+        const friends = await this.friendRepository.find({ where: { user: { userID: myID } } });
+        return friends;
     }
 
 }
