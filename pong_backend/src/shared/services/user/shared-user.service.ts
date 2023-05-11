@@ -37,10 +37,17 @@ export class SharedUser {
         return (true)
     }
 
-    async getFriends(myID: number): Promise<Friend[]>  //todo: returning the friend objects instead of the lines of the public.friend database
+    async getFriends(myID: number): Promise<FriendUser[]> // todo: Ready to test
     {
         const friends = await this.friendRepository.find({ where: { user: { userID: myID } } });
-        return friends;
+        const friendUsers = await Promise.all(friends.map(async (friend) => {
+            const user = await this.userRepository.findOne({ where: { userID: friend.friendUser.userID } });
+        return {
+            userId: user.userID,
+            nickname: user.username,
+            status: user.status
+        };
+        }));
+    return friendUsers;
     }
-
 }
