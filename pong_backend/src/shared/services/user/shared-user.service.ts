@@ -12,14 +12,24 @@ export class SharedUser {
 
     constructor(
         @InjectRepository(Friend)
-        private readonly friendRepository: Repository<Friend>
+        private readonly friendRepository: Repository<Friend>,
+
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>
     ){}
+
 
 
     async isFriend(myID:number, friendID:number): Promise<boolean> //todo: Test this
     {
         const friend = await this.friendRepository.findOne({ where: { user: { userID: myID }, friendUser: { userID: friendID } } });
         return !!friend;
+    }
+
+    async getUsers(): Promise<PublicUser[]> //todo: Test this
+    {
+        const users = await this.userRepository.find();
+        return users.map(user => ({userId: user.userID, nickname: user.username}));
     }
 
     findUser(userID:number)
