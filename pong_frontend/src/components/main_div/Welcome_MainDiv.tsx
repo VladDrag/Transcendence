@@ -2,7 +2,7 @@ import React from 'react';
 
 interface WelcomeProps
 {
-  userID: number;
+  userID: string; // number
 }
 
 const Welcome_MainDiv: React.FC<WelcomeProps> = ({userID}) => {
