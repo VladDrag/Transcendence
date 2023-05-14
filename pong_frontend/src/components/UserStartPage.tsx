@@ -4,7 +4,7 @@ import MainDivSelector, {main_div_mode_t} from './MainDivSelector';
 
 interface StartPageProps
 {
-  id: number;
+  id: string; // number
 }
 
 const UserStartPage: React.FC<StartPageProps> = ({id}) => {

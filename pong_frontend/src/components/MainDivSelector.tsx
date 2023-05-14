@@ -15,7 +15,7 @@ export enum main_div_mode_t {
 
 interface MainDivProps
 {
-  userID: number;
+  userID: string; // number
   mode: main_div_mode_t;
   mode_set: React.Dispatch<React.SetStateAction<main_div_mode_t>>;
 }
